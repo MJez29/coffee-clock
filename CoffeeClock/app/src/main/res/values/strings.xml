@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Coffee Clock</string>
+    <string name="action_settings">Settings</string>
+    <string name="coffee_level_l">Coffee Amount: Low</string>
+    <string name="coffee_level_m">Coffee Amount: Medium</string>
+    <string name="coffee_level_h">Coffee Amount: High</string>
+    <string name="make_coffee_button">Set Coffee Alarm</string>
+</resources>
