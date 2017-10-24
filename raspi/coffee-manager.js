@@ -13,7 +13,7 @@ let brewQueue = [];
  * @type { number }
  * @const
  */
-const BREW_LENGTH = 5 * 60 * 1000;
+const BREW_LENGTH = 3 * 60 * 1000;
 const PAUSE_LENGTH = 2 * 60 * 1000;
 
 let brewingProcess;
@@ -35,7 +35,7 @@ module.exports = {
     /**
      * Returns the order info for a particular order number. If the orderNum is invalid then it throws an
      * error
-     * @param { orderNum } orderNum
+     * @param { string } orderNum
      * @return { Order }
      */
     getOrder: (orderNum) => {
@@ -43,11 +43,8 @@ module.exports = {
         // The orderNum passed through the url is stored as a string
         orderNum = parseInt(orderNum);
 
-        if (orderNum === NaN)
-            throw Status.INVALID_ORDER_NUMBER;
-
         for (let i = 0; i < brewQueue.length; ++i) {
-            if (brewQueue[i].orderNum == orderNum) {
+            if (brewQueue[i].orderNum === orderNum) {
                 return brewQueue[i];
             }
         }
@@ -72,6 +69,36 @@ module.exports = {
 
         }
 
+    },
+
+    /**
+     * Attempts to delete an order, returns true if successful
+     * @param { number } orderNum
+     * 
+     * @return { number }
+     * 
+     * Status.OK is returned when the order is deleted successfully
+     * Status.CANNOT_DELETE_ORDER is returned when the order is being currently being brewed
+     * Status.INVALID_ORDER_NUMBER is returned if the order cannot be found which could be because
+     *      - Was previously deleted
+     *      - orderNum cannot be converted to an integer
+     *      - The order has already been brewed
+     */
+    deleteOrder: (orderNum) => {
+        orderNum = parseInt(orderNum);
+
+        for (let i = 0; i < brewQueue.length; ++i) {
+            if (brewQueue[i].orderNum === orderNum) {
+                if (i == 0) {
+                    return Status.CANNOT_DELETE_ORDER;
+                } else {
+                    return Status.OK
+                }
+            }
+        }
+
+        // If the orderNum is not a number or is not in the brew queue
+        return Status.INVALID_ORDER_NUMBER;
     }
 
 }

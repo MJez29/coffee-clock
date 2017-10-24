@@ -1,13 +1,19 @@
 module.exports = class Order {
 
-    static IN_QUEUE = 0;
-    static BREWING = 1;
-    static DONE = 2;
+    static get IN_QUEUE() {
+        return 0;
+    }
+    static get BREWING() {
+        return 1;
+    }
+    static get DONE() {
+        return 2;
+    }
 
     constructor(d) {
-        this.orderNum = n;
+        this.orderNum = new Date().getTime();
         this.delay = d;
-        this.status = IN_QUEUE;
+        this.status = this.IN_QUEUE;
     }
 
     /**
