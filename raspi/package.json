@@ -1,0 +1,18 @@
+{
+  "name": "raspi",
+  "version": "1.0.0",
+  "description": "A server running on a Raspberry Pi that controls a Keurig machine",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "gitlab@git.uwaterloo.ca:se101-f17/se101-f17-group-17.git"
+  },
+  "author": "Michal Jez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
