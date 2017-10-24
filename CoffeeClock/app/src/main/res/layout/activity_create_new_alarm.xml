@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.coffee.coffeeclock.CreateNewAlarm">
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="-2dp" />
+
+    <Button
+        android:id="@+id/makeCoffeeButton"
+        android:layout_width="225dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/make_coffee_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <SeekBar
+        android:id="@+id/coffeeLevelSeekBar"
+        android:layout_width="229dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/coffeeLevelText"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/coffeeLevelText"
+        android:layout_width="233dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="76dp"
+        android:text="@string/coffee_level_l"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/makeCoffeeButton" />
+
+</android.support.constraint.ConstraintLayout>
