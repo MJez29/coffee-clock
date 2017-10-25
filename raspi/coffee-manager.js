@@ -18,6 +18,30 @@ const PAUSE_LENGTH = 2 * 60 * 1000;
 
 let brewingProcess;
 
+let brewOrder = () => {
+// If there is an order to be brewed
+if (brewQueue.length > 0) {
+	    let order = brewQueue[0];
+	    order.setStatus(Order.BREWING);
+	
+	    let brewingProcess = spawn("python3", ["brew.py", "Large"]);
+	    brewingProcess.on("close", (code) => {
+		if (code == 0) {
+			console.log("Brew successful");
+		} else {
+			console.log("Brew failed");
+		}
+		brewOrder();
+	    });
+	
+	    // Sets a timer to go off when the coffee is brewed
+	    // setTimeout(onBrewingFinished, BREW_LENGTH);
+	} else {
+	
+	}
+
+};
+
 module.exports = {
 
     /**
@@ -29,6 +53,9 @@ module.exports = {
         let order = new Order(brewQueue.length * BREW_LENGTH);
 
         brewQueue.push(order);
+	if (brewQueue.length === 1) {
+		brewOrder();
+	}
         return order;
     },
 
@@ -55,21 +82,7 @@ module.exports = {
     /**
      * Begins brewing the first Order in brewQueue
      */
-    brewOrder: () => {
-        // If there is an order to be brewed
-        if (brewQueue.length > 0) {
-            let order = brewQueue[0];
-            order.setStatus(Order.BREWING);
-
-            brewingProcess = spawn("./brew");
-
-            // Sets a timer to go off when the coffee is brewed
-            setTimeout(onBrewingFinished, BREW_LENGTH);
-        } else {
-
-        }
-
-    },
+    brewOrder: brewOrder,
 
     /**
      * Attempts to delete an order, returns true if successful
@@ -121,9 +134,11 @@ onBrewingFinished = () => {
  * Begins the new brew if there is one.
  * 
  * @return { void }
+
  */
 onPausingFinished = () => {
     // Removes the first element
     brewQueue.shift();
+
     module.exports.brewOrder();
 }
