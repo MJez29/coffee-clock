@@ -38,10 +38,11 @@
 
     <TextView
         android:id="@+id/coffeeLevelText"
+        android:progress="0"
         android:layout_width="233dp"
         android:layout_height="0dp"
         android:layout_marginStart="76dp"
-        android:text="@string/coffee_level_l"
+        android:text="Coffee Size:Small"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"

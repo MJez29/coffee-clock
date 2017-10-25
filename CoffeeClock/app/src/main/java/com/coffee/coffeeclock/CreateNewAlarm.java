@@ -20,20 +20,25 @@ public class CreateNewAlarm extends AppCompatActivity{
         //Update the text to match the SeekBar
         final SeekBar coffeeLevelSB = (SeekBar)findViewById(R.id.coffeeLevelSeekBar);
         final TextView coffeeLevelT = (TextView)findViewById(R.id.coffeeLevelText);
+        size = getString(R.string.coffee_level_l); // Default value
+
         coffeeLevelSB.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(progress <= 33) {
-                    coffeeLevelT.setText(getString(R.string.coffee_level_l));
+                    coffeeLevelT.setText(getString(R.string.coffee_level_indi)
+                            .concat(getString(R.string.coffee_level_l)));
                     size = getString(R.string.coffee_level_l);
                 }
                 else if (progress >= 66){
-                    coffeeLevelT.setText(getString(R.string.coffee_level_h));
+                    coffeeLevelT.setText(getString(R.string.coffee_level_indi)
+                            .concat(getString(R.string.coffee_level_h)));
                     size = getString(R.string.coffee_level_h);
                 }
                 else{
-                    coffeeLevelT.setText(getString(R.string.coffee_level_m));
+                    coffeeLevelT.setText(getString(R.string.coffee_level_indi)
+                            .concat(getString(R.string.coffee_level_m)));
                     size = getString(R.string.coffee_level_m);
                 }
             }

@@ -1,11 +1,14 @@
 package com.coffee.coffeeclock;
 
 
+import java.text.DecimalFormat;
+
 public class Alarm {
 
     private int hour;
     private int minute;
     private String size;
+    DecimalFormat timeFormat = new DecimalFormat("00");
 
     //Default constructor
     public Alarm(){
@@ -18,7 +21,8 @@ public class Alarm {
     }
     @Override
     public String toString(){
-        return "" + hour + ":" + minute;
+        return "Alarm set for " + timeFormat.format(hour) + ":" + timeFormat.format(minute) +
+                " with coffee size: " + size;
     }
 
 }

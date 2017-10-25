@@ -3,11 +3,14 @@ package com.coffee.coffeeclock;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     static final ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     String requestURL;
     RequestQueue requestQueue;
+    ListView alarmListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +42,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         requestURL = getString(R.string.request_url);
         requestQueue = Volley.newRequestQueue(this);
+        alarmListView = (ListView) findViewById(R.id.alarmListView);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         //in the future, will update with the newest alarms every time MainActivity returns to focus
-        TextView tempMsg = (TextView)findViewById(R.id.tempMainMessage);
-        tempMsg.setText(getString(R.string.coffee_alarm_num).concat(Integer.toString(alarms.size())));
+        ArrayAdapter<Alarm> alarmListAdapter = new ArrayAdapter<Alarm>(this,
+                android.R.layout.simple_list_item_1, alarms);
+        alarmListView.setAdapter(alarmListAdapter);
     }
 
     //method to start the "create new alarm" activity
