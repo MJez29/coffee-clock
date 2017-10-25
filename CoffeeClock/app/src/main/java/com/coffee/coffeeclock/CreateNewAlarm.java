@@ -3,11 +3,10 @@ package com.coffee.coffeeclock;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
-import static com.coffee.coffeeclock.R.id.timePicker;
 
 public class CreateNewAlarm extends AppCompatActivity{
     @Override
@@ -38,13 +37,13 @@ public class CreateNewAlarm extends AppCompatActivity{
         });
     }
 
-    public void makeAlarm()
+    public void makeAlarm(View view)
     {
-        //method to actually submit an alarm, needs to be fixed later
-
-        /*Intent intent = new Intent(this, AlarmManager.class);
+        Intent intent = new Intent(this, MainActivity.class);
         TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
-        AlarmManager.addAlarm(timePicker.getHour(), timePicker.getMinute());
-        startActivity(intent);*/
+        intent.putExtra("alarm_hour", timePicker.getHour());
+        intent.putExtra("alarm_minute", timePicker.getMinute());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
