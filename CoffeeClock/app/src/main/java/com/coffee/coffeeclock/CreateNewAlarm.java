@@ -9,6 +9,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 public class CreateNewAlarm extends AppCompatActivity{
+
+    private String size;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,12 +24,18 @@ public class CreateNewAlarm extends AppCompatActivity{
         {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress <= 33)
+                if(progress <= 33) {
                     coffeeLevelT.setText(getString(R.string.coffee_level_l));
-                else if (progress >= 66)
+                    size = getString(R.string.coffee_level_l);
+                }
+                else if (progress >= 66){
                     coffeeLevelT.setText(getString(R.string.coffee_level_h));
-                else
+                    size = getString(R.string.coffee_level_h);
+                }
+                else{
                     coffeeLevelT.setText(getString(R.string.coffee_level_m));
+                    size = getString(R.string.coffee_level_m);
+                }
             }
 
             @Override
@@ -43,6 +52,7 @@ public class CreateNewAlarm extends AppCompatActivity{
         TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
         intent.putExtra("alarm_hour", timePicker.getHour());
         intent.putExtra("alarm_minute", timePicker.getMinute());
+        intent.putExtra("alarm_size", size);
         setResult(RESULT_OK, intent);
         finish();
     }

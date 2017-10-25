@@ -1,27 +1,24 @@
 package com.coffee.coffeeclock;
 
-import android.view.View;
-import android.view.ViewGroup;
-
-/**
- * Created by James on 2017-10-24.
- */
 
 public class Alarm {
 
     private int hour;
     private int minute;
+    private String size;
 
     //Default constructor
     public Alarm(){
-        this(0, 0);
+        this(0, 0, "Medium");
     }
-    public Alarm(int hour, int minute){
+    public Alarm(int hour, int minute, String size){
         this.hour = hour;
         this.minute = minute;
+        this.size = size;
     }
     @Override
     public String toString(){
         return "" + hour + ":" + minute;
     }
+
 }

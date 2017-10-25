@@ -27,8 +27,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     static final int SET_ALARM_REQUEST = 1;
     static final ArrayList<Alarm> alarms = new ArrayList<Alarm>();
-    final RequestQueue requestQueue = Volley.newRequestQueue(this);
-    final String requestURL = getString(R.string.request_url);
+    String requestURL;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        requestURL = getString(R.string.request_url);
+        requestQueue = Volley.newRequestQueue(this);
     }
 
     @Override
@@ -58,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
             // Add an alarm to the list if one was created
             if (resultCode == RESULT_OK) {
                 alarms.add(new Alarm(data.getIntExtra("alarm_hour", 0),
-                                     data.getIntExtra("alarm_minute", 0)));
+                                     data.getIntExtra("alarm_minute", 0),
+                                     data.getStringExtra("alarm_size")));
             }
         }
     }
