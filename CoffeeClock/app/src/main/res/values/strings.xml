@@ -5,4 +5,6 @@
     <string name="coffee_level_m">Coffee Amount: Medium</string>
     <string name="coffee_level_h">Coffee Amount: High</string>
     <string name="make_coffee_button">Set Coffee Alarm</string>
+    <string name="request_url">http://date.jsontest.com</string>
+    <string name="coffee_alarm_num">Coffee Alarms: </string>
 </resources>
