@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //in the future, will update with the newest alarms every time MainActivity returns to focus
-        ArrayAdapter<Alarm> alarmListAdapter = new ArrayAdapter<Alarm>(this,
+        AlarmArrayAdapter<Alarm> alarmArrayAdapter = new AlarmArrayAdapter<Alarm>(this,
                 android.R.layout.simple_list_item_1, alarms);
-        alarmListView.setAdapter(alarmListAdapter);
+        alarmListView.setAdapter(alarmArrayAdapter);
     }
 
     //method to start the "create new alarm" activity
