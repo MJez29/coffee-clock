@@ -13,9 +13,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
     public AlarmArrayAdapter(Context context, int resource, List<Alarm> objects)
@@ -41,7 +45,7 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET,
+                JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,
                                                 RequestManager.requestURL, null,
                     new Response.Listener<JSONObject>()
                     {
@@ -50,10 +54,12 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
                             // Do something with the response
                             try
                             {
-                                alarmDesc.setText(response.getString("time"));
+                                alarmDesc.setText(
+                                        RequestManager.checkStatus(response.getInt("status")));
                             }
                             catch(org.json.JSONException e){
                                 // Whoops
+                                alarmDesc.setText(e.toString());
                             }
                         }
                     },
@@ -64,8 +70,34 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
                             // Handle the error
                         }
                     }
-                );
-                RequestManager.getInstance(getContext()).addToRequestQueue(getRequest);
+                ){
+                    @Override
+                    public byte[] getBody()
+                    {
+                        JSONObject jsonObject = new JSONObject();
+                        String body = null;
+                        try
+                        {
+                            jsonObject.put("coffeeSize", "Medium");
+                            body = jsonObject.toString();
+                        } catch (JSONException e)
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+
+                        try
+                        {
+                            return body.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException e)
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+                };
+                RequestManager.getInstance(getContext()).addToRequestQueue(postRequest);
             }
         });
         return itemView;

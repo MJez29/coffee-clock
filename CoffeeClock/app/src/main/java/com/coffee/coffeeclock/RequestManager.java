@@ -17,9 +17,11 @@ import java.util.Map;
 
 public class RequestManager {
     private static RequestManager requestManager;
-    public static String requestURL = "http://date.jsontest.com";
+    public static String requestURL = "http://192.168.137.209:3000/brew";
     private  RequestQueue requestQueue;
     private  Context context;
+    private static String[] orderStatus = {"OK", "INVALID_ORDER_NUMBER", "CANNOT_DELETE_ORDER",
+            "INTERNAL_BREWING_ERROR", "INVALID_BREW_SIZE"};
 
     private RequestManager(Context context)
     {
@@ -46,6 +48,11 @@ public class RequestManager {
     public<T> void addToRequestQueue(Request<T> request)
     {
         requestQueue.add(request);
+    }
+
+    public static String checkStatus(int i)
+    {
+        return orderStatus[i];
     }
 
     // God knows when these methods will be used, more like syntax references
