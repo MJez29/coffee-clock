@@ -22,13 +22,19 @@ app.route("/brew")
      * Returns general information about the Keurig, such as expected wait until a new order can be brewed
      */
     .get((req, res, next) => {
-        console.log("GET /brew");
+        let status = CoffeeManager.getStatus();
+        res.json({
+            status: Status.OK,
+            numOrders: status.numOrders,
+            delay: status.delay
+        });
     })
     /**
      * A POST request is sent to signal a new order
      * It sends back order information
      */
     .post((req, res, next) => {
+        console.log("POST /brew" + JSON.stringify(req.body));
         try {
             res.json({
                 status: Status.OK,
