@@ -16,47 +16,75 @@ let brewQueue = [];
 const BREW_LENGTH = 3 * 60 * 1000;
 const PAUSE_LENGTH = 2 * 60 * 1000;
 
+/**
+ * The python process that actually controls the pins on the Keurig to brew the coffee
+ * @type { ChildProcess }
+ */
 let brewingProcess;
 
 let brewOrder = () => {
-// If there is an order to be brewed
-if (brewQueue.length > 0) {
+    // If there is an order to be brewed
+    if (brewQueue.length > 0) {
 	    let order = brewQueue[0];
-	    order.setStatus(Order.BREWING);
-	
-	    let brewingProcess = spawn("python3", ["brew.py", "Large"]);
+        order.setStatus(Order.BREWING);
+        console.log("Beginning brew");
+    
+        // Change "python" to "python3" to use Python 3 on the Raspberry Pi
+        brewingProcess = spawn("python", ["brew.py", order.getSize()]);
+        brewingProcess.stdout.on("data", (data) => {
+            console.log("Brewing process says: " + data.toString());
+        })
 	    brewingProcess.on("close", (code) => {
-		if (code == 0) {
-			console.log("Brew successful");
-		} else {
-			console.log("Brew failed");
-		}
-		brewOrder();
+            if (code == 0) {
+                console.log("Brew successful");
+            } else {
+                console.log("Brew failed with code " + code);
+            }
+            brewQueue.shift();
+            brewOrder();
 	    });
 	
 	    // Sets a timer to go off when the coffee is brewed
 	    // setTimeout(onBrewingFinished, BREW_LENGTH);
 	} else {
-	
+        console.log("There is nothing to brew... going to standby");
 	}
 
 };
 
 module.exports = {
 
+    getStatus: () => {
+        return {
+            numOrders: brewQueue.length,
+            delay: brewQueue.length * BREW_LENGTH
+        }
+    },
+
     /**
      * Adds an order to the brew queue and returns info about the order
+     * @param { string } size
      * 
      * @return { { ordernNum: number, delay: number } }
+     * @throws { Status.INVALID_SIZE }
      */
-    addOrder: () => {
-        let order = new Order(brewQueue.length * BREW_LENGTH);
+    addOrder: (size) => {
+        if (Order.isValidSize(size)) {
+            let order = new Order(size);
 
-        brewQueue.push(order);
-	if (brewQueue.length === 1) {
-		brewOrder();
-	}
-        return order;
+            brewQueue.push(order);
+
+            console.log(`Recieved new order... there are currently ${brewQueue.length} orders in queue`);
+
+            // If the new order is the first in the queue
+            if (brewQueue.length === 1) {
+                // Brew it
+                brewOrder();
+            }
+            return order;
+        } else {
+            throw Status.INVALID_BREW_SIZE;
+        }
     },
 
     /**
@@ -72,17 +100,14 @@ module.exports = {
 
         for (let i = 0; i < brewQueue.length; ++i) {
             if (brewQueue[i].orderNum === orderNum) {
-                return brewQueue[i];
+                let res = brewQueue[i].toJSON();
+                res.delay = i * (BREW_LENGTH);          // Estimates how long it will take until the order begins brewing
+                return res;
             }
         }
 
         throw Status.INVALID_ORDER_NUMBER;
     },
-
-    /**
-     * Begins brewing the first Order in brewQueue
-     */
-    brewOrder: brewOrder,
 
     /**
      * Attempts to delete an order, returns true if successful
@@ -105,7 +130,9 @@ module.exports = {
                 if (i == 0) {
                     return Status.CANNOT_DELETE_ORDER;
                 } else {
-                    return Status.OK
+                    brewQueue.shift();
+                    console.log(`Order deleted successfully... there are currently ${brewQueue.length} orders in queue`)
+                    return Status.OK;
                 }
             }
         }

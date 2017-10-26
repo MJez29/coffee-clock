@@ -2,6 +2,8 @@
 
 The server will be running on port 3000
 
+---
+
 ## Response Format
 Responses will always be JSON and will have a [status](#statuses) field attached.
 ```typescript
@@ -11,11 +13,17 @@ res = {
 }
 ```
 
+---
+
 ## Statuses
 Possible values that the server will return for the status in the response body:
 - `OK: 0`
 - `INVALID_ORDER_NUMBER: 1`
 - `CANNOT_DELETE_ORDER: 2`
+- `INTERNAL_BREWING_ERROR: 3`
+- `INVALID_BREW_SIZE: 4`
+
+---
 
 ## Order
 An `Order` object will always appear as follows in a response body:
@@ -25,16 +33,27 @@ res = {
     order: {
         orderNum: number,
         delay: number,          // In milliseconds
-        status: number          // IN_QUEUE = 0; BREWING = 1; DONE = 2;
+        status: number,         // IN_QUEUE = 0; BREWING = 1; DONE = 2;
+        size: string            // "Small", "Medium", "Large"
     },
     ...
 }
 ```
 
+---
+
 ## `/brew`
 
 **GET**  
 Returns the current number of orders in queue and the expected time until completion of all brew jobs
+```typescript
+res = {
+    ...
+    delay: number,          // The (estimated) length of time before a new order will get brewed
+    numOrders: number       // The number of orders in the queue
+    ...
+}
+```
 
 **POST**  
 Adds a new brew job to the Keurig. It expects a request body of the form:
@@ -44,6 +63,8 @@ req.body = {
 }
 ```
 Returns an [`Order`](#order) object
+
+---
 
 ## `/brew/:orderNum`
 

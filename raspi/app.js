@@ -29,14 +29,16 @@ app.route("/brew")
      * It sends back order information
      */
     .post((req, res, next) => {
-        console.log("BODY: " + JSON.stringify(req.body, null, 4));
-        console.log("QUERY: " + JSON.stringify(req.query, null, 4));
-        console.log("PARAMS: " + JSON.stringify(req.params, null, 4));
-        //console.log(JSON.stringify(req, null, 4));
-        res.json({
-            status: Status.OK,
-            order: CoffeeManager.addOrder()
-        });
+        try {
+            res.json({
+                status: Status.OK,
+                order: CoffeeManager.addOrder(req.body.coffeeSize)
+            });
+        } catch (e) {
+            res.json({
+                status: e
+            })
+        }
     })
 
 app.route("/brew/:orderNum")

@@ -1,3 +1,5 @@
+const COFFEE_SIZE = require("./coffee-size");
+
 module.exports = class Order {
 
     static get IN_QUEUE() {
@@ -10,10 +12,14 @@ module.exports = class Order {
         return 2;
     }
 
-    constructor(d) {
+    /**
+     * 
+     * @param { string } size 
+     */
+    constructor(size) {
         this.orderNum = new Date().getTime();
-        this.delay = d;
         this.status = this.IN_QUEUE;
+        this.size = size;
     }
 
     /**
@@ -22,5 +28,27 @@ module.exports = class Order {
      */
     setStatus(status) {
         this.status = status;
+    }
+
+    getSize() {
+        return this.size;
+    }
+
+    toJSON() {
+        return {
+            size: this.size,
+            orderNum: this.orderNum,
+            status: this.status
+        };
+    }
+
+    /**
+     * Returns true if it is a valid size to be brewed
+     * @param { string } size 
+     * 
+     * @return { boolean }
+     */
+    static isValidSize(size) {
+        return size === COFFEE_SIZE.SMALL || size === COFFEE_SIZE.MEDIUM || size === COFFEE_SIZE.LARGE;
     }
 }
