@@ -21,8 +21,8 @@ public class Alarm {
     }
     @Override
     public String toString(){
-        return "Alarm set for " + timeFormat.format(hour) + ":" + timeFormat.format(minute) +
-                " with coffee size: " + size;
+        return "" + timeFormat.format(hour) + ":" + timeFormat.format(minute) +
+                " || " + size;
     }
 
 }

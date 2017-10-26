@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/alarmDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/editAlarmBtn"
+        android:textSize="24sp"
+        android:text="@string/alarm_desc_default" />
+
+    <Button
+        android:id="@+id/editAlarmBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/edit_alarm" />
+
+    <Switch
+        android:id="@+id/alarmOnOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/editAlarmBtn"
+        android:layout_alignBaseline="@+id/editAlarmBtn"
+        android:switchMinWidth="72dp"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

@@ -7,4 +7,6 @@
     <string name="coffee_level_h">Large</string>
     <string name="make_coffee_button">Set Coffee Alarm</string>
     <string name="request_url">http://date.jsontest.com</string>
+    <string name="edit_alarm">Edit</string>
+    <string name="alarm_desc_default">Null alarm.</string>
 </resources>
