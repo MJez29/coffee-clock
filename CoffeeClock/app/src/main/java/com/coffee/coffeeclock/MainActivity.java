@@ -30,8 +30,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     static final int SET_ALARM_REQUEST = 1;
     static final ArrayList<Alarm> alarms = new ArrayList<Alarm>();
-    String requestURL;
-    RequestQueue requestQueue;
     ListView alarmListView;
 
     @Override
@@ -40,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        requestURL = getString(R.string.request_url);
-        requestQueue = Volley.newRequestQueue(this);
         alarmListView = (ListView) findViewById(R.id.alarmListView);
     }
 
@@ -49,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //in the future, will update with the newest alarms every time MainActivity returns to focus
-        AlarmArrayAdapter<Alarm> alarmArrayAdapter = new AlarmArrayAdapter<Alarm>(this,
+        AlarmArrayAdapter<Alarm> alarmListAdapter = new AlarmArrayAdapter<Alarm>(this,
                 android.R.layout.simple_list_item_1, alarms);
-        alarmListView.setAdapter(alarmArrayAdapter);
+        alarmListView.setAdapter(alarmListAdapter);
     }
 
     //method to start the "create new alarm" activity
@@ -92,76 +88,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    // Create a GET request
-    public void sendGetRequest() {
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
-            new Response.Listener<JSONObject>()
-            {
-                @Override
-                public void onResponse(JSONObject response) {
-                    // Do something with the response
-                }
-            },
-            new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // Handle the error
-                }
-            }
-        );
-        requestQueue.add(getRequest);
-    }
-
-    // Create a POST request
-    public void sendPostRequest() {
-        JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Do something with the object
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle the error
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("coffeeSize", "Medium"); // Temporary value to be replaced
-                return params;
-            }
-        };
-        requestQueue.add(postRequest);
-    }
-
-    // Create a DELETE request
-    public void sendDeleteRequest() {
-        JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Do something with the object
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle the error
-                    }
-                }
-        );
-        requestQueue.add(deleteRequest);
     }
 }
