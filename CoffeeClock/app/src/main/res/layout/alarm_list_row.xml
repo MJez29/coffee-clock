@@ -28,9 +28,10 @@
         android:id="@+id/alarmOnOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/editAlarmBtn"
         android:layout_alignBaseline="@+id/editAlarmBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_toStartOf="@+id/editAlarmBtn"
         android:switchMinWidth="72dp"
-        android:layout_centerHorizontal="true" />
+        android:checked="true"/>
 
 </RelativeLayout>

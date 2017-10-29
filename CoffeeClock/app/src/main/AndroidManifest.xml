@@ -3,6 +3,10 @@
     package="com.coffee.coffeeclock">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+
 
     <application
         android:allowBackup="true"
@@ -22,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateNewAlarm" android:parentActivityName=".MainActivity"></activity>
+        <receiver android:name=".AlarmReceiver" android:enabled="true"></receiver>
     </application>
 
 </manifest>

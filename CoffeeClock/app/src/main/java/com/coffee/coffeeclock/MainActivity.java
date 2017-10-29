@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     static final int SET_ALARM_REQUEST = 1;
     static final ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     ListView alarmListView;
+    AlarmArrayAdapter<Alarm> alarmListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +40,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         alarmListView = (ListView) findViewById(R.id.alarmListView);
+        alarmListAdapter = new AlarmArrayAdapter<Alarm>(this,
+                android.R.layout.simple_list_item_1, alarms);
+        alarmListView.setAdapter(alarmListAdapter);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         //in the future, will update with the newest alarms every time MainActivity returns to focus
-        AlarmArrayAdapter<Alarm> alarmListAdapter = new AlarmArrayAdapter<Alarm>(this,
-                android.R.layout.simple_list_item_1, alarms);
-        alarmListView.setAdapter(alarmListAdapter);
+        alarmListAdapter.notifyDataSetChanged();
     }
 
     //method to start the "create new alarm" activity
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 alarms.add(new Alarm(data.getIntExtra("alarm_hour", 0),
                                      data.getIntExtra("alarm_minute", 0),
                                      data.getStringExtra("alarm_size")));
+                alarms.get(alarms.size() - 1).alarmOn(this);
             }
         }
     }
