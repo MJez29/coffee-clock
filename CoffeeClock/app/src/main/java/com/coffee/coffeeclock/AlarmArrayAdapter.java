@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,18 +19,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
+
     public AlarmArrayAdapter(Context context, int resource, List<Alarm> objects)
     {
         super(context, resource, objects);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, final ViewGroup parent)
     {
         View itemView = null;
         if (convertView == null) {
@@ -38,10 +42,23 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
             itemView = convertView;
         }
         final TextView alarmDesc = (TextView)itemView.findViewById(R.id.alarmDesc);
-        Alarm currAlarm = getItem(position);
+        final com.coffee.coffeeclock.Alarm currAlarm =
+                (com.coffee.coffeeclock.Alarm)getItem(position);
         alarmDesc.setText(currAlarm.toString());
 
+        Switch alarmSwitch = (Switch)itemView.findViewById(R.id.alarmOnOff);
+        // Turn alarm on and off
+        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    currAlarm.alarmOn(parent.getContext());
+                else
+                    currAlarm.alarmOff(parent.getContext());
+            }
+        });
+
         Button editButton = (Button)itemView.findViewById(R.id.editAlarmBtn);
+        // POST Request
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
