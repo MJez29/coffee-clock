@@ -50,10 +50,12 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
         // Turn alarm on and off
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if(isChecked) {
                     currAlarm.alarmOn(parent.getContext());
-                else
+                }
+                else {
                     currAlarm.alarmOff(parent.getContext());
+                }
             }
         });
 

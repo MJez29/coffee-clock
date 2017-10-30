@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 alarms.add(new Alarm(data.getIntExtra("alarm_hour", 0),
                                      data.getIntExtra("alarm_minute", 0),
-                                     data.getStringExtra("alarm_size")));
+                                     data.getStringExtra("alarm_size"), this));
                 alarms.get(alarms.size() - 1).alarmOn(this);
             }
         }
