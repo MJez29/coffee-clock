@@ -1,6 +1,8 @@
 package com.coffee.coffeeclock;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.coffee.coffeeclock.MainActivity.SET_ALARM_REQUEST;
+
 public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
 
     public AlarmArrayAdapter(Context context, int resource, List<Alarm> objects)
@@ -32,7 +36,7 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
     }
 
     @Override
-    public View getView(int position, View convertView, final ViewGroup parent)
+    public View getView(final int position, View convertView, final ViewGroup parent)
     {
         View itemView = null;
         if (convertView == null) {
@@ -60,8 +64,19 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
         });
 
         Button editButton = (Button)itemView.findViewById(R.id.editAlarmBtn);
-        // POST Request
+
         editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parent.getContext(), CreateNewAlarm.class);
+                intent.putExtra("index", position); // The index of the alarm
+                ((Activity)parent.getContext()).startActivityForResult(intent,
+                        MainActivity.EDIT_ALARM_REQUEST);
+            }
+        });
+
+        // POST Request template
+        /*editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,
@@ -118,7 +133,7 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
                 };
                 RequestManager.getInstance(getContext()).addToRequestQueue(postRequest);
             }
-        });
+        });*/
         return itemView;
     }
 }

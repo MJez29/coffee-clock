@@ -29,6 +29,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     static final int SET_ALARM_REQUEST = 1;
+    static final int EDIT_ALARM_REQUEST = 2;
     static final ArrayList<Alarm> alarms = new ArrayList<Alarm>();
     ListView alarmListView;
     AlarmArrayAdapter<Alarm> alarmListAdapter;
@@ -67,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
                                      data.getIntExtra("alarm_minute", 0),
                                      data.getStringExtra("alarm_size"), this));
                 alarms.get(alarms.size() - 1).alarmOn(this);
+            }
+        }
+        if (requestCode == EDIT_ALARM_REQUEST) {
+            // Change the alarm that was edited
+            if (resultCode == RESULT_OK) {
+                alarms.set(data.getIntExtra("index", 0),
+                        new Alarm(data.getIntExtra("alarm_hour", 0),
+                        data.getIntExtra("alarm_minute", 0),
+                        data.getStringExtra("alarm_size"), this));
+                alarms.get(data.getIntExtra("index", 0)).alarmOn(this);
             }
         }
     }
