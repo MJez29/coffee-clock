@@ -8,5 +8,5 @@
 import Foundation
 
 protocol AlarmApplicationDelegate {
-    func playSound(_ soundName: String)
+    func playSound(_ soundName: String, coffeeSize: String)
 }

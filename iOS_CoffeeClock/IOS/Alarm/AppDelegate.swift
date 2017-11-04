@@ -51,8 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
             soundName = userInfo["soundName"] as! String
             index = userInfo["index"] as! Int
         }
-        
-        playSound(soundName)
+        print(index);
+        self.alarmModel = Alarms()
+
+        playSound(soundName, coffeeSize: alarmModel.alarms[index].label)
         //schedule notification for snooze
         if isSnooze {
             let snoozeOption = UIAlertAction(title: "Snooze", style: .default) {
@@ -103,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
     }
     
     //AlarmApplicationDelegate protocol
-    func playSound(_ soundName: String) {
+    func playSound(_ soundName: String, coffeeSize: String) {
         
         //vibrate phone first
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -136,6 +138,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
         //negative number means loop infinity
         audioPlayer!.numberOfLoops = -1
         audioPlayer!.play()
+        
+       
+        brewCoffee(coffeeSize: coffeeSize);
+    }
+    
+    func brewCoffee(coffeeSize: String) {
+        let parameters = ["coffeeSize": coffeeSize]
+        
+        let urlLink = "https://jsonplaceholder.typicode.com/posts";
+        
+        guard let url = URL(string: urlLink) else {return}
+        var request = URLRequest(url: url);
+        request.httpMethod = "POST";
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type");
+        
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {return}
+        
+        request.httpBody = httpBody;
+        
+        let session = URLSession.shared;
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+                print(response);
+            }
+            
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(json);
+                } catch {
+                    print(error);
+                }
+            }
+            
+            }.resume()
     }
     
     //AVAudioPlayerDelegate protocol
