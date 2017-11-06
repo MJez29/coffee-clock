@@ -42,6 +42,9 @@ public class Alarm {
         // Only set the timer if the time hasn't already passed
         if(calendar.getTimeInMillis() > currentTime.getTimeInMillis()) {
             Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra("alarm_hour", hour);
+            intent.putExtra("alarm_minute", minute);
+            intent.putExtra("alarm_size", size);
             // The unique ID of the alarm is HHMM as an integer
             PendingIntent pi = PendingIntent.getBroadcast(context, hour * 100 + minute, intent, 0);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);

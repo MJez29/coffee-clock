@@ -1,7 +1,10 @@
 package com.coffee.coffeeclock;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.Toolbar;
@@ -49,7 +52,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //in the future, will update with the newest alarms every time MainActivity returns to focus
+        Intent notifIntent = getIntent();
+        if(notifIntent != null)
+        {
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(notifIntent.getIntExtra("id", 0));
+        }
         alarmListAdapter.notifyDataSetChanged();
     }
 
@@ -57,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
     public void createNewAlarm(View view) {
         Intent intent = new Intent(this, CreateNewAlarm.class);
         startActivityForResult(intent, SET_ALARM_REQUEST);
+    }
+
+    public void testMethod(View view) {
+        AlarmReceiver ar = new AlarmReceiver();
+        ar.onReceive(this, new Intent(this, this.getClass()));
     }
 
     @Override

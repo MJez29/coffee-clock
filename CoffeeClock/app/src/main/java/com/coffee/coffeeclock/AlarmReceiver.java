@@ -1,9 +1,26 @@
 package com.coffee.coffeeclock;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
+
+import static android.app.Notification.PRIORITY_HIGH;
+import static android.app.Notification.VISIBILITY_PUBLIC;
+import static android.support.v4.app.NotificationManagerCompat.IMPORTANCE_HIGH;
 
 /**
  * Created by James on 2017-10-29.
@@ -11,7 +28,56 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Alarm worked.", Toast.LENGTH_LONG).show();
+
+        int id = intent.getIntExtra("alarm_hour", 0) * 100 + intent.getIntExtra("alarm_minute", 0);
+
+        Intent onSnoozeIntent = new Intent(context, MainActivity.class);
+        onSnoozeIntent.putExtra("id", id);
+
+        PendingIntent pi = PendingIntent.getActivity(context, 1, onSnoozeIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri notification =
+                Uri.parse("android.resource://"+context.getPackageName()+"/raw/alarm_tone");
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setTicker("Coffee Clock")
+                        .setSmallIcon(R.mipmap.ic_stat_onesignal_default)
+                        .setContentTitle("Notification title")
+                        .setContentText("Your coffee is brewing, id:" + id)
+                        .setVisibility(VISIBILITY_PUBLIC)
+                        .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
+                        .addAction(R.drawable.ic_stat_name,
+                                "Open App", pi)
+                        .setContentInfo("Info")
+                        .setSound(notification);
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(id, mBuilder.build());
+
+        /*AlertDialog.Builder adBuilder = new AlertDialog.Builder(context);
+        adBuilder.setMessage("Alarm went off")
+                .setTitle("Coffee Clock")
+                .setPositiveButton(
+                        "Snooze",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                alarmSound.stop();
+                            }
+                        })
+                .setNegativeButton(
+                "Disable",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        alarmSound.stop();
+                    }
+                });
+
+        AlertDialog dialog = adBuilder.create();
+        dialog.show();*/
+
     }
 }
 

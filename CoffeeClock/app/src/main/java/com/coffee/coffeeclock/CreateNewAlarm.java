@@ -1,6 +1,8 @@
 package com.coffee.coffeeclock;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,8 +58,13 @@ public class CreateNewAlarm extends AppCompatActivity{
 
         Intent intent = new Intent(this, MainActivity.class);
         TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
-        intent.putExtra("alarm_hour", timePicker.getHour());
-        intent.putExtra("alarm_minute", timePicker.getMinute());
+        if(Build.VERSION.SDK_INT < 23){
+            intent.putExtra("alarm_hour", timePicker.getCurrentHour());
+            intent.putExtra("alarm_minute", timePicker.getCurrentMinute());
+        } else{
+            intent.putExtra("alarm_hour", timePicker.getHour());
+            intent.putExtra("alarm_minute", timePicker.getMinute());
+        }
         intent.putExtra("alarm_size", size);
 
         Intent startingIntent = getIntent();
