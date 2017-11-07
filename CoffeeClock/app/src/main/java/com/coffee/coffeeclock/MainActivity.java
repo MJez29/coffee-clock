@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(notifIntent.getIntExtra("id", 0));
         }*/
+        Collections.sort(alarms);
         alarmListAdapter.notifyDataSetChanged();
     }
 
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 alarms.get(alarms.size() - 1).alarmOn(this);
             }
         }
+        Collections.sort(alarms);
         alarmListAdapter.notifyDataSetChanged();
     }
 

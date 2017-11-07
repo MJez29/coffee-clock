@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-public class Alarm {
+public class Alarm implements Comparable<Alarm>{
 
     private int hour;
     private int minute;
@@ -57,5 +57,24 @@ public class Alarm {
         Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, 0);
         alarmManager.cancel(pi);
+    }
+
+    public int compareTo(Alarm al)
+    {
+        if(this.hour > al.hour)
+            return 1;
+        if(this.hour < al.hour)
+            return -1;
+        else
+        {
+            if(this.minute > al.minute)
+                return 1;
+            if(this.minute < al.minute)
+                return -1;
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
