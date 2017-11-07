@@ -69,7 +69,7 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(parent.getContext(), CreateNewAlarm.class);
-                intent.putExtra("index", position); // The index of the alarm
+                intent.putExtra("index", position);
                 ((Activity)parent.getContext()).startActivityForResult(intent,
                         MainActivity.EDIT_ALARM_REQUEST);
             }

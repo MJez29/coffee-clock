@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -52,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Intent notifIntent = getIntent();
+        /*Intent notifIntent = getIntent();
         if(notifIntent != null)
         {
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(notifIntent.getIntExtra("id", 0));
-        }
+        }*/
         alarmListAdapter.notifyDataSetChanged();
     }
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testMethod(View view) {
+        Toast.makeText(this, IdGenerator.getid()+"" , Toast.LENGTH_SHORT).show();
         AlarmReceiver ar = new AlarmReceiver();
         ar.onReceive(this, new Intent(this, this.getClass()));
     }
@@ -87,13 +89,15 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == EDIT_ALARM_REQUEST) {
             // Change the alarm that was edited
             if (resultCode == RESULT_OK) {
-                alarms.set(data.getIntExtra("index", 0),
-                        new Alarm(data.getIntExtra("alarm_hour", 0),
+                alarms.get(data.getIntExtra("index", 0)).alarmOff(this);
+                alarms.remove(data.getIntExtra("index", 0));
+                alarms.add(new Alarm(data.getIntExtra("alarm_hour", 0),
                         data.getIntExtra("alarm_minute", 0),
                         data.getStringExtra("alarm_size"), this));
-                alarms.get(data.getIntExtra("index", 0)).alarmOn(this);
+                alarms.get(alarms.size() - 1).alarmOn(this);
             }
         }
+        alarmListAdapter.notifyDataSetChanged();
     }
 
     @Override

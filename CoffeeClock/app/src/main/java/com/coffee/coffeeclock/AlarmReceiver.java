@@ -28,13 +28,17 @@ import static android.support.v4.app.NotificationManagerCompat.IMPORTANCE_HIGH;
 
 public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-
-        int id = intent.getIntExtra("alarm_hour", 0) * 100 + intent.getIntExtra("alarm_minute", 0);
-
-        Intent onSnoozeIntent = new Intent(context, MainActivity.class);
+        /*Intent onSnoozeIntent = new Intent(context, MainActivity.class);
         onSnoozeIntent.putExtra("id", id);
 
         PendingIntent pi = PendingIntent.getActivity(context, 1, onSnoozeIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        .addAction(R.drawable.ic_stat_name,
+                                "Open App", pi) */
+
+        Intent onClickIntent = new Intent(context, MainActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(context, 1, onClickIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri notification =
@@ -44,16 +48,16 @@ public class AlarmReceiver extends BroadcastReceiver {
                         .setTicker("Coffee Clock")
                         .setSmallIcon(R.mipmap.ic_stat_onesignal_default)
                         .setContentTitle("Notification title")
-                        .setContentText("Your coffee is brewing, id:" + id)
+                        .setContentText("Your coffee is brewing, coffee size: "
+                                + intent.getStringExtra("alarm_size"))
                         .setVisibility(VISIBILITY_PUBLIC)
                         .setDefaults(Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
-                        .addAction(R.drawable.ic_stat_name,
-                                "Open App", pi)
                         .setContentInfo("Info")
+                        .setContentIntent(pi)
                         .setSound(notification);
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(id, mBuilder.build());
+        notificationManager.notify(IdGenerator.getid(), mBuilder.build());
 
         /*AlertDialog.Builder adBuilder = new AlertDialog.Builder(context);
         adBuilder.setMessage("Alarm went off")

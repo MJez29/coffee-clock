@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
@@ -16,6 +17,7 @@ public class Alarm {
     private int hour;
     private int minute;
     private String size;
+    private int id;
     Calendar calendar;
     private AlarmManager alarmManager;
     DecimalFormat timeFormat = new DecimalFormat("00");
@@ -24,6 +26,7 @@ public class Alarm {
         this.hour = hour;
         this.minute = minute;
         this.size = size;
+        this.id = IdGenerator.getid();
         calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -45,16 +48,14 @@ public class Alarm {
             intent.putExtra("alarm_hour", hour);
             intent.putExtra("alarm_minute", minute);
             intent.putExtra("alarm_size", size);
-            // The unique ID of the alarm is HHMM as an integer
-            PendingIntent pi = PendingIntent.getBroadcast(context, hour * 100 + minute, intent, 0);
+            PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, 0);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
         }
     }
 
     public void alarmOff(Context context) {
         Intent intent = new Intent(context, AlarmReceiver.class);
-        // The unique ID of the alarm is HHMM as an integer
-        PendingIntent pi = PendingIntent.getBroadcast(context, hour * 100 + minute, intent, 0);
+        PendingIntent pi = PendingIntent.getBroadcast(context, id, intent, 0);
         alarmManager.cancel(pi);
     }
 }

@@ -55,7 +55,6 @@ public class CreateNewAlarm extends AppCompatActivity{
 
     public void makeAlarm(View view)
     {
-
         Intent intent = new Intent(this, MainActivity.class);
         TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
         if(Build.VERSION.SDK_INT < 23){
@@ -68,10 +67,7 @@ public class CreateNewAlarm extends AppCompatActivity{
         intent.putExtra("alarm_size", size);
 
         Intent startingIntent = getIntent();
-        if(startingIntent.hasExtra("index"))
-        {
-            intent.putExtra("index", startingIntent.getIntExtra("index", 0));
-        }
+        intent.putExtra("index", startingIntent.getIntExtra("index", 0));
 
         setResult(RESULT_OK, intent);
         finish();
