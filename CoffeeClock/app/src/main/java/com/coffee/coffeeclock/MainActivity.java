@@ -1,8 +1,10 @@
 package com.coffee.coffeeclock;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -63,12 +66,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, SET_ALARM_REQUEST);
     }
 
-    public void testMethod(View view) {
-        Toast.makeText(this, IdGenerator.getid()+"" , Toast.LENGTH_SHORT).show();
-        AlarmReceiver ar = new AlarmReceiver();
-        ar.onReceive(this, new Intent(this, this.getClass()));
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SET_ALARM_REQUEST) {
@@ -97,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void updateAlarmStorage(){
+    private void updateAlarmStorage(){
         //Toast.makeText(this, "UpdateAlarmStorage called", Toast.LENGTH_SHORT).show();
         deleteFile(alarmStorageFile);
         try {
@@ -121,9 +118,40 @@ public class MainActivity extends AppCompatActivity {
             myAlarms = (ArrayList<MyAlarm>) ois.readObject();
             for(MyAlarm al : myAlarms)
                 al.instantiateAM(this); // Transient field
-        }catch (Exception e) {
+        }
+        catch (FileNotFoundException e) {
+            // We throw away this exception since it occurs when the app is first opened
+        }
+        catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void removeAlarm(final int index){
+        AlertDialog.Builder adBuilder = new AlertDialog.Builder(this);
+        adBuilder.setMessage("Are you sure you want to delete this alarm?")
+                .setTitle("Coffee Clock")
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                myAlarms.remove(index);
+                                updateAlarmStorage();
+                                alarmListAdapter.notifyDataSetChanged();
+                                Toast.makeText(MainActivity.this, "Alarm deleted.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = adBuilder.create();
+        dialog.show();
     }
 
     @Override

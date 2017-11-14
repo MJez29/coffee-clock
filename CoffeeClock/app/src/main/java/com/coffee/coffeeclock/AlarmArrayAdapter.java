@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -67,10 +66,8 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.myAlarms.remove(position);
-                ((MainActivity)parent.getContext()).updateAlarmStorage();
+                ((MainActivity)parent.getContext()).removeAlarm(position);
                 // Call to MainActivity within static context
-                notifyDataSetChanged();
             }
         });
 

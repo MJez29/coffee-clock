@@ -58,30 +58,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(IdGenerator.getid(), mBuilder.build());
-
-        /*AlertDialog.Builder adBuilder = new AlertDialog.Builder(context);
-        adBuilder.setMessage("MyAlarm went off")
-                .setTitle("Coffee Clock")
-                .setPositiveButton(
-                        "Snooze",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                alarmSound.stop();
-                            }
-                        })
-                .setNegativeButton(
-                "Disable",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        alarmSound.stop();
-                    }
-                });
-
-        AlertDialog dialog = adBuilder.create();
-        dialog.show();*/
-
     }
 }
 

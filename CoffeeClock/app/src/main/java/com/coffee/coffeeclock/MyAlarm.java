@@ -5,9 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -18,6 +16,7 @@ public class MyAlarm implements Comparable<MyAlarm>, Serializable{
     private int minute;
     private String size;
     public int id;
+
     Calendar calendar;
     transient private AlarmManager alarmManager;
     DecimalFormat timeFormat = new DecimalFormat("00");
