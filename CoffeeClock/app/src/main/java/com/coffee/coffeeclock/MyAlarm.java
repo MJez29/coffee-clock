@@ -3,26 +3,31 @@ package com.coffee.coffeeclock;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
-public class Alarm implements Comparable<Alarm>{
+public class MyAlarm implements Comparable<MyAlarm>, Serializable{
 
     private int hour;
     private int minute;
     private String size;
-    private int id;
+    public int id;
     Calendar calendar;
-    private AlarmManager alarmManager;
+    transient private AlarmManager alarmManager;
     DecimalFormat timeFormat = new DecimalFormat("00");
 
-    public Alarm(int hour, int minute, String size, Context context){
+    public MyAlarm(Context context)
+    {
+        this(0, 0, "Small", context);
+    }
+
+    public MyAlarm(int hour, int minute, String size, Context context){
         this.hour = hour;
         this.minute = minute;
         this.size = size;
@@ -38,6 +43,10 @@ public class Alarm implements Comparable<Alarm>{
     public String toString(){
         return "" + timeFormat.format(hour) + ":" + timeFormat.format(minute) +
                 " || " + size;
+    }
+
+    public void instantiateAM(Context context){
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
     public void alarmOn(Context context) {
@@ -59,7 +68,7 @@ public class Alarm implements Comparable<Alarm>{
         alarmManager.cancel(pi);
     }
 
-    public int compareTo(Alarm al)
+    public int compareTo(MyAlarm al)
     {
         if(this.hour > al.hour)
             return 1;

@@ -11,22 +11,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.coffee.coffeeclock.MainActivity.SET_ALARM_REQUEST;
 
 public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
 
@@ -46,19 +33,19 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
             itemView = convertView;
         }
         final TextView alarmDesc = (TextView)itemView.findViewById(R.id.alarmDesc);
-        final com.coffee.coffeeclock.Alarm currAlarm =
-                (com.coffee.coffeeclock.Alarm)getItem(position);
-        alarmDesc.setText(currAlarm.toString());
+        final MyAlarm currMyAlarm =
+                (MyAlarm)getItem(position);
+        alarmDesc.setText(currMyAlarm.toString());
 
         Switch alarmSwitch = (Switch)itemView.findViewById(R.id.alarmOnOff);
         // Turn alarm on and off
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    currAlarm.alarmOn(parent.getContext());
+                    currMyAlarm.alarmOn(parent.getContext());
                 }
                 else {
-                    currAlarm.alarmOff(parent.getContext());
+                    currMyAlarm.alarmOff(parent.getContext());
                 }
             }
         });
@@ -72,6 +59,18 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
                 intent.putExtra("index", position);
                 ((Activity)parent.getContext()).startActivityForResult(intent,
                         MainActivity.EDIT_ALARM_REQUEST);
+            }
+        });
+
+        Button deleteButton = (Button)itemView.findViewById(R.id.deleteAlarmBtn);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.myAlarms.remove(position);
+                ((MainActivity)parent.getContext()).updateAlarmStorage();
+                // Call to MainActivity within static context
+                notifyDataSetChanged();
             }
         });
 

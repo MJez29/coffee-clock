@@ -60,7 +60,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(IdGenerator.getid(), mBuilder.build());
 
         /*AlertDialog.Builder adBuilder = new AlertDialog.Builder(context);
-        adBuilder.setMessage("Alarm went off")
+        adBuilder.setMessage("MyAlarm went off")
                 .setTitle("Coffee Clock")
                 .setPositiveButton(
                         "Snooze",

@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/alarmDesc"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -20,18 +20,29 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/edit_alarm"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/deleteAlarmBtn"/>
+
+    <Button
+        android:id="@+id/deleteAlarmBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:text="@string/edit_alarm" />
+        android:layout_alignBaseline="@+id/editAlarmBtn"
+        android:text="@string/delete_alarm" />
 
     <Switch
         android:id="@+id/alarmOnOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/editAlarmBtn"
-        android:layout_centerHorizontal="true"
+        android:switchMinWidth="64dp"
+        android:checked="true"
+        android:layout_alignBaseline="@+id/alarmDesc"
+        android:layout_alignBottom="@+id/alarmDesc"
         android:layout_toStartOf="@+id/editAlarmBtn"
-        android:switchMinWidth="72dp"
-        android:checked="true"/>
+        android:layout_marginEnd="16dp"/>
 
 </RelativeLayout>
