@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -42,12 +43,18 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
                     currMyAlarm.alarmOn(parent.getContext());
+                    currMyAlarm.switchState = true;
                 }
                 else {
                     currMyAlarm.alarmOff(parent.getContext());
+                    currMyAlarm.switchState = false;
                 }
+                notifyDataSetChanged();
+                ((MainActivity)parent.getContext()).updateAlarmStorage();
             }
         });
+
+        alarmSwitch.setChecked(currMyAlarm.switchState);
 
         Button editButton = (Button)itemView.findViewById(R.id.editAlarmBtn);
 

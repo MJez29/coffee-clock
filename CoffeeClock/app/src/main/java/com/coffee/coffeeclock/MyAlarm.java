@@ -15,6 +15,7 @@ public class MyAlarm implements Comparable<MyAlarm>, Serializable{
     private int hour;
     private int minute;
     private String size;
+    public boolean switchState;
     public int id;
 
     Calendar calendar;
@@ -30,6 +31,7 @@ public class MyAlarm implements Comparable<MyAlarm>, Serializable{
         this.hour = hour;
         this.minute = minute;
         this.size = size;
+        this.switchState = true;
         this.id = IdGenerator.getid();
         calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);

@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
     static final int SET_ALARM_REQUEST = 1;
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void updateAlarmStorage(){
+    public void updateAlarmStorage(){
         //Toast.makeText(this, "UpdateAlarmStorage called", Toast.LENGTH_SHORT).show();
         deleteFile(alarmStorageFile);
         try {
@@ -139,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                                 myAlarms.remove(index);
                                 updateAlarmStorage();
                                 alarmListAdapter.notifyDataSetChanged();
-                                Toast.makeText(MainActivity.this, "Alarm deleted.", Toast.LENGTH_SHORT).show();
                             }
                         })
                 .setNegativeButton(
