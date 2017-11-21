@@ -1,16 +1,22 @@
 package com.coffee.coffeeclock;
 
-/**
- * Created by James on 2017-11-06.
+/*
+    IdGenerator
+    A small class used to generate unique IDs for Alarms to avoid overlap
  */
 
 public class IdGenerator {
-    public static int id = 1;
-    public static int getid(){
+    private static int id = 1;
+
+    public static int getid()
+    {
         id++;
         return id;
     }
-    public static void setid(int newid){
+
+    // Called when data is recovered to avoid ID overlap
+    public static void setid(int newid)
+    {
         id = newid;
     }
 }
