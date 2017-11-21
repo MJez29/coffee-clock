@@ -30,7 +30,7 @@ let brewOrder = () => {
         console.log("Beginning brew");
     
         // Change "python" to "python3" to use Python 3 on the Raspberry Pi
-        brewingProcess = spawn("python", ["brew.py", order.getSize()]);
+        brewingProcess = spawn("python3", ["brew.py"]);
         brewingProcess.stdout.on("data", (data) => {
             console.log("Brewing process says: " + data.toString());
         })

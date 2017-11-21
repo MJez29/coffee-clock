@@ -30,37 +30,35 @@ GPIO.setup(BREW_SIZE_SERVO_PIN, GPIO.OUT)
 lidServo = GPIO.PWM(11, 50)
 brewServo = GPIO.PWM(15, 50)
 
-print("About to start")
+print("Moving servos to correct positions")
 
 lidServo.start(7.5)
-brewServo.start(12.5)
-
-print("Servos started (sleep for 2s)")
+brewServo.start(2.5)
 
 time.sleep(2)
 
 lidServo.ChangeDutyCycle(2.5)
 
-print("Lid servo duty cycle changed (sleep 1s)")
+print("Lid closed sensor pressed")
 
-time.sleep(1)
+time.sleep(2)
 
 brewServo.ChangeDutyCycle(7.5)
 
-print("Brew servo duty cycle changed (sleep 1s)")
+time.sleep(0.5)
 
-time.sleep(1)
+brewServo.ChangeDutyCycle(2.5)
 
-brewServo.ChangeDutyCycle(12.5)
+print("Brew button pressed")
 
-print("Brew servo duty cycle changed (all done)")
-
-time.sleep(1)
+time.sleep(90)
 
 # Returns to original positions
 
-lidServo.start(7.5)
-brewServo.start(12.5)
+lidServo.ChangeDutyCycle(7.5)
+brewServo.ChangeDutyCycle(2.5)
+
+print("Servos back to original position")
 
 time.sleep(1)
 
