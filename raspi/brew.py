@@ -51,7 +51,7 @@ brewServo.ChangeDutyCycle(2.5)
 
 print("Brew button pressed")
 
-time.sleep(90)
+time.sleep(120)
 
 # Returns to original positions
 
