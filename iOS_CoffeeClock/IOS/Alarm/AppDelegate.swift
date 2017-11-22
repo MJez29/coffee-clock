@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         var error: NSError?
+//        Plays the alarm audio
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         } catch let error1 as NSError{
@@ -46,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
         var isSnooze: Bool = false
         var soundName: String = ""
         var index: Int = -1
+//        Gets neccesary info to display on snooze popup
         if let userInfo = notification.userInfo {
             isSnooze = userInfo["snooze"] as! Bool
             soundName = userInfo["soundName"] as! String
@@ -63,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
             }
             storageController.addAction(snoozeOption)
         }
+//        Resets and returns to main storyboard after snooze is dismiseed
         let stopOption = UIAlertAction(title: "OK", style: .default) {
             (action:UIAlertAction)->Void in self.audioPlayer?.stop()
             AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate)
@@ -76,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
             }
             mainVC!.changeSwitchButtonState(index: index)
         }
-        
+//        View handling
         storageController.addAction(stopOption)
         window?.visibleViewController?.navigationController?.present(storageController, animated: true, completion: nil)
     }
@@ -116,8 +119,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             },
             nil)
-        let url = URL(fileURLWithPath: Bundle.main.path(forResource: soundName, ofType: "mp3")!)
         
+//        Sets up conditions for playing audio and then plays it until stopped (rip your roomate if you sleep through your alarmclock)
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: soundName, ofType: "mp3")!)
         var error: NSError?
         
         do {
@@ -146,10 +150,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
     func brewCoffee(coffeeSize: String) {
         let parameters = ["coffeeSize": coffeeSize]
         
+//        Url link to send post request
         let urlLink = "https://jsonplaceholder.typicode.com/posts";
+//        let urlLink = "192.168.137.47:3000/brew";
+
         
         guard let url = URL(string: urlLink) else {return}
         var request = URLRequest(url: url);
+        
+//        Configures post request
         request.httpMethod = "POST";
         request.addValue("application/json", forHTTPHeaderField: "Content-Type");
         
@@ -158,6 +167,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AVAudioPlayerDelegate, Al
         request.httpBody = httpBody;
         
         let session = URLSession.shared;
+        
+//        Sends the post request and prints the response
         session.dataTask(with: request) { (data, response, error) in
             if let response = response {
                 print(response);

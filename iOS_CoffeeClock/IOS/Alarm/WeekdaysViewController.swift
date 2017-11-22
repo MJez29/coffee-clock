@@ -27,7 +27,7 @@ class WeekdaysViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
+//        Adds checkmarks to selected weekdays/weekends
         for weekday in weekdays
         {
             if weekday == (indexPath.row + 1) {
@@ -61,6 +61,7 @@ class WeekdaysViewController: UITableViewController {
 
 extension WeekdaysViewController {
     static func repeatText(weekdays: [Int]) -> String {
+//        Shows Dates selected for a particular alarm
         if weekdays.count == 7 {
             return "Every day"
         }

@@ -37,6 +37,7 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func saveEditAlarm(_ sender: AnyObject) {
+//        Saves required alarm data into the alarmModel array
         let date = Scheduler.correctSecondComponent(date: datePicker.date)
         let index = segueInfo.curCellIndex
         var tempAlarm = Alarm()
@@ -80,13 +81,13 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+//        Configures the display of the editing cells for the alarm
         var cell = tableView.dequeueReusableCell(withIdentifier: Id.settingIdentifier)
         if(cell == nil) {
         cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: Id.settingIdentifier)
         }
         if indexPath.section == 0 {
-            
+//            Editing cells
             if indexPath.row == 0 {
                 
                 cell!.textLabel!.text = "Repeat"
@@ -117,6 +118,7 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
         else if indexPath.section == 1 {
+//            Only displays when editing the alarm
             cell = UITableViewCell(
                 style: UITableViewCellStyle.default, reuseIdentifier: Id.settingIdentifier)
             cell!.textLabel!.text = "Delete Alarm"
@@ -131,6 +133,7 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         if indexPath.section == 0 {
+//             Each cell splits into even more options to configure
             switch indexPath.row{
             case 0:
                 performSegue(withIdentifier: Id.weekdaysSegueIdentifier, sender: self)
@@ -149,7 +152,7 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
         else if indexPath.section == 1 {
-            //delete alarm
+//            delete alarm
             alarmModel.alarms.remove(at: segueInfo.curCellIndex)
             performSegue(withIdentifier: Id.saveSegueIdentifier, sender: self)
         }
@@ -163,7 +166,7 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+//     In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
@@ -180,7 +183,6 @@ class AlarmAddEditViewController: UIViewController, UITableViewDelegate, UITable
             alarmScheduler.reSchedule()
         }
         else if segue.identifier == Id.soundSegueIdentifier {
-            //TODO
             let dist = segue.destination as! MediaViewController
             dist.mediaID = segueInfo.mediaID
             dist.mediaLabel = segueInfo.mediaLabel

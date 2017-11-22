@@ -9,6 +9,7 @@
 import Foundation
 
 struct Id {
+//    Used in segue transitions between views
     static let stopIdentifier = "Alarm-ios-swift-stop"
     static let snoozeIdentifier = "Alarm-ios-swift-snooze"
     static let addSegueIdentifier = "addSegue"
