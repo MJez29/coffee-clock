@@ -43,7 +43,7 @@ class Scheduler : AlarmSchedulerDelegate
         
         let actionsArray = snoozeEnabled ? [UIUserNotificationAction](arrayLiteral: snoozeAction, stopAction) : [UIUserNotificationAction](arrayLiteral: stopAction)
         let actionsArrayMinimal = snoozeEnabled ? [UIUserNotificationAction](arrayLiteral: snoozeAction, stopAction) : [UIUserNotificationAction](arrayLiteral: stopAction)
-        // Specify the category related to the above actions.
+//         Specify the category related to the above actions.
         let alarmCategory = UIMutableUserNotificationCategory()
         alarmCategory.identifier = "myAlarmCategory"
         alarmCategory.setActions(actionsArray, for: .default)
@@ -58,6 +58,7 @@ class Scheduler : AlarmSchedulerDelegate
     
     fileprivate func correctDate(_ date: Date, onWeekdaysForNotify weekdays:[Int]) -> [Date]
     {
+//        Sets up the date needed for the alarm clock
         var correctedDate: [Date] = [Date]()
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let now = Date()
@@ -65,7 +66,7 @@ class Scheduler : AlarmSchedulerDelegate
         let dateComponents = (calendar as NSCalendar).components(flags, from: date)
         let weekday:Int = dateComponents.weekday!
         
-        //no repeat
+//        no repeat
         if weekdays.isEmpty{
             //scheduling date is eariler than current date
             if date < now {
@@ -88,7 +89,7 @@ class Scheduler : AlarmSchedulerDelegate
                 if compare(weekday: wd, with: weekday) == .before {
                     wdDate =  (calendar as NSCalendar).date(byAdding: NSCalendar.Unit.day, value: wd+daysInWeek-weekday, to: date, options:.matchStrictly)!
                 }
-                //schedule on today or next week
+//                schedule on today or next week
                 else if compare(weekday: wd, with: weekday) == .same {
                     //scheduling date is eariler than current date, then schedule on next week
                     if date.compare(now) == ComparisonResult.orderedAscending {
@@ -98,7 +99,7 @@ class Scheduler : AlarmSchedulerDelegate
                         wdDate = date
                     }
                 }
-                //schedule on next days of this week
+//                schedule on next days of this week
                 else { //after
                     wdDate =  (calendar as NSCalendar).date(byAdding: NSCalendar.Unit.day, value: wd-weekday, to: date, options:.matchStrictly)!
                 }
@@ -119,6 +120,8 @@ class Scheduler : AlarmSchedulerDelegate
     
     
     func setNotificationWithDate(_ date: Date, onWeekdaysForNotify weekdays:[Int], snoozeEnabled:Bool,  onSnooze: Bool, soundName: String, index: Int) {
+        
+//        Configures notification with coffee size
         let AlarmNotification: UILocalNotification = UILocalNotification()
         if (alarmModel.alarms[index].label == "Small" || alarmModel.alarms[index].label == "Medium" || alarmModel.alarms[index].label == "Large") {
             AlarmNotification.alertBody = "Wake Up! Your " + alarmModel.alarms[index].label + " coffee is brewing! "
@@ -142,6 +145,8 @@ class Scheduler : AlarmSchedulerDelegate
         let datesForNotification = correctDate(date, onWeekdaysForNotify:weekdays)
         
         syncAlarmModel()
+        
+//        Accounts for snooze press
         for d in datesForNotification {
             if onSnooze {
                 alarmModel.alarms[index].date = Scheduler.correctSecondComponent(date: alarmModel.alarms[index].date)
@@ -157,6 +162,7 @@ class Scheduler : AlarmSchedulerDelegate
     }
     
     func setNotificationForSnooze(snoozeMinute: Int, soundName: String, index: Int) {
+//        More snooze notification configuration and processing!
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let now = Date()
         let snoozeTime = (calendar as NSCalendar).date(byAdding: NSCalendar.Unit.minute, value: snoozeMinute, to: now, options:.matchStrictly)!
@@ -175,7 +181,7 @@ class Scheduler : AlarmSchedulerDelegate
         }
     }
     
-    // workaround for some situation that alarm model is not setting properly (when app on background or not launched)
+//     workaround for some situation that alarm model is not setting properly (when app on background or not launched)
     func checkNotification() {
         alarmModel = Alarms()
         let notifications = UIApplication.shared.scheduledLocalNotifications
@@ -186,6 +192,7 @@ class Scheduler : AlarmSchedulerDelegate
         }
         else {
             for (i, alarm) in alarmModel.alarms.enumerated() {
+//                Manual iteration through all alarms to ensure it works properly even in background
                 var isOutDated = true
                 if alarm.onSnooze {
                     isOutDated = false
@@ -203,9 +210,11 @@ class Scheduler : AlarmSchedulerDelegate
     }
     
     private func syncAlarmModel() {
+//        Reinitializes the alarmModel since all data is saved to userInfo locally
         alarmModel = Alarms()
     }
     
+//    Logic for dating
     private enum weekdaysComparisonResult {
         case before
         case same
@@ -220,6 +229,7 @@ class Scheduler : AlarmSchedulerDelegate
     }
     
     private func minFireDateWithIndex(notifications: [UILocalNotification]) -> (Date, Int)? {
+//        Processes Date and index, then returns it
         if notifications.isEmpty {
             return nil
         }

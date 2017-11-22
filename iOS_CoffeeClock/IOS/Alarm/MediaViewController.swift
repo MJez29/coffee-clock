@@ -30,6 +30,7 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
     }
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+//        Formatting for table view
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor =  UIColor.gray
         header.textLabel?.font = UIFont.boldSystemFont(ofSize: 10)
@@ -61,7 +62,9 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { if section == 0 {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        Returns the notifcation setting the user chose (Song v.s ringtone)
+        if section == 0 {
             return nil
         }
         else if section == 1 {
@@ -81,6 +84,7 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        configuration for the notification sound/vibration
         var cell = tableView.dequeueReusableCell(withIdentifier: Id.musicIdentifier)
         if(cell == nil) {
             cell = UITableViewCell(
@@ -88,7 +92,7 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
         }
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                cell!.textLabel!.text = "Buy More Tones"
+                cell!.textLabel!.text = "Get More Tones (SE 2022 Exclusive!)"
             }
         }
         else if indexPath.section == 1 {
@@ -119,9 +123,10 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        Deprecated feature due to too many bugs (Originally an option to select songs)
         let mediaPicker = MPMediaPickerController(mediaTypes: MPMediaType.anyAudio)
         mediaPicker.delegate = self
-        mediaPicker.prompt = "Select any song!"
+        mediaPicker.prompt = "Return"
         mediaPicker.allowsPickingMultipleItems = false
         if indexPath.section == 2 {
             if indexPath.row == 0 {
@@ -147,6 +152,7 @@ class MediaViewController: UITableViewController, MPMediaPickerControllerDelegat
     
     //MPMediaPickerControllerDelegate
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems  mediaItemCollection:MPMediaItemCollection) -> Void {
+//        Select from a list of custom audio
         if !mediaItemCollection.items.isEmpty {
             let aMediaItem = mediaItemCollection.items[0]
         

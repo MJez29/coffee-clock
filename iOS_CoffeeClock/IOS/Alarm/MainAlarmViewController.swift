@@ -37,7 +37,7 @@ class MainAlarmViewController: UITableViewController{
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Table view data source
+//     MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
@@ -49,7 +49,7 @@ class MainAlarmViewController: UITableViewController{
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Return the number of rows in the section.
+//         Return the number of rows in the section.
         if alarmModel.count == 0 {
             tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         }
@@ -62,6 +62,7 @@ class MainAlarmViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditing {
+//            Passes info into the next view through segue transition
             performSegue(withIdentifier: Id.editSegueIdentifier, sender: SegueInfo(curCellIndex: indexPath.row, isEditMode: true, label: alarmModel.alarms[indexPath.row].label, mediaLabel: alarmModel.alarms[indexPath.row].mediaLabel, mediaID: alarmModel.alarms[indexPath.row].mediaID, repeatWeekdays: alarmModel.alarms[indexPath.row].repeatWeekdays, enabled: alarmModel.alarms[indexPath.row].enabled, snoozeEnabled: alarmModel.alarms[indexPath.row].snoozeEnabled))
         }
     }
@@ -81,11 +82,11 @@ class MainAlarmViewController: UITableViewController{
         str.addAttributes(timeAttr, range: NSMakeRange(0, str.length-2))
         cell!.textLabel?.attributedText = str
         cell!.detailTextLabel?.text = alarm.label
-        //append switch button
+//        append switch button
         let sw = UISwitch(frame: CGRect())
         sw.transform = CGAffineTransform(scaleX: 0.9, y: 0.9);
         
-        //tag is used to indicate which row had been touched
+//        tag is used to indicate which row had been touched
         sw.tag = indexPath.row
         sw.addTarget(self, action: #selector(MainAlarmViewController.switchTapped(_:)), for: UIControlEvents.valueChanged)
         if alarm.enabled {
@@ -143,10 +144,10 @@ class MainAlarmViewController: UITableViewController{
         }   
     }
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+//     In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+//         Pass the selected object to the new view controller.
         let dist = segue.destination as! UINavigationController
         let addEditController = dist.topViewController as! AlarmAddEditViewController
         if segue.identifier == Id.addSegueIdentifier {
@@ -171,6 +172,7 @@ class MainAlarmViewController: UITableViewController{
             alarmModel.alarms[index].enabled = false
         }
         let cells = tableView.visibleCells
+//        Only applies to alarms which are disabled
         for cell in cells {
             if cell.tag == index {
                 let sw = cell.accessoryView as! UISwitch

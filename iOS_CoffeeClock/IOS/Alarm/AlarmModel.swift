@@ -35,6 +35,7 @@ struct Alarm: PropertyReflectable {
     }
     
     init(_ dict: PropertyReflectable.RepresentationType){
+//        Saves information to keyword dictionary
         date = dict["date"] as! Date
         enabled = dict["enabled"] as! Bool
         snoozeEnabled = dict["snoozeEnabled"] as! Bool
@@ -50,6 +51,7 @@ struct Alarm: PropertyReflectable {
 }
 
 extension Alarm {
+//    Time formatting
     var formattedTime: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
@@ -64,6 +66,7 @@ class Alarms: Persistable {
     var alarms: [Alarm] = [] {
         //observer, sync with UserDefaults
         didSet{
+//            Automatic syncing
             persist()
         }
     }

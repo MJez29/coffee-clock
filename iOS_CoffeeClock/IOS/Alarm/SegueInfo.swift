@@ -9,6 +9,7 @@
 import Foundation
 
 struct SegueInfo {
+//    Information Segue passes between views
     var curCellIndex: Int
     var isEditMode: Bool
     var label: String

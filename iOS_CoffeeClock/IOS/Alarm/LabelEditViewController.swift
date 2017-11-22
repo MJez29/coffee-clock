@@ -57,6 +57,7 @@ class LabelEditViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        Returns coffee information
         label = coffee[row];
         performSegue(withIdentifier: Id.labelUnwindIdentifier, sender: self)
         //This method can be used when no state passing is needed
