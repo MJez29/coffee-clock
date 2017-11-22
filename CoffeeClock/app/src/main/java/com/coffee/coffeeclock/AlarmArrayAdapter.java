@@ -12,25 +12,17 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.coffee.coffeeclock.MainActivity.SET_ALARM_REQUEST;
+/*
+    AlarmArrayAdapter
+    A custom array adapter used to display custom MyAlarm objects in a ListView
+ */
 
-public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
+public class AlarmArrayAdapter<E> extends ArrayAdapter<E>
+{
 
-    public AlarmArrayAdapter(Context context, int resource, List<Alarm> objects)
+    public AlarmArrayAdapter(Context context, int resource, List<E> objects)
     {
         super(context, resource, objects);
     }
@@ -38,102 +30,71 @@ public class AlarmArrayAdapter<Alarm> extends ArrayAdapter<Alarm> {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent)
     {
+        // MyAlarm object being processed
+        final MyAlarm currMyAlarm = (MyAlarm)getItem(position);
+
         View itemView = null;
-        if (convertView == null) {
+        if (convertView == null)
+        {
+            // Inflate view from XML if not already inflated
             LayoutInflater li = LayoutInflater.from(this.getContext());
             itemView = li.inflate(R.layout.alarm_list_row, null);
-        } else {
+        }
+        else
+        {
             itemView = convertView;
         }
-        final TextView alarmDesc = (TextView)itemView.findViewById(R.id.alarmDesc);
-        final com.coffee.coffeeclock.Alarm currAlarm =
-                (com.coffee.coffeeclock.Alarm)getItem(position);
-        alarmDesc.setText(currAlarm.toString());
 
         Switch alarmSwitch = (Switch)itemView.findViewById(R.id.alarmOnOff);
-        // Turn alarm on and off
-        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    currAlarm.alarmOn(parent.getContext());
+        // Turn alarm on and off based on switch movement
+        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if(isChecked)
+                {
+                    currMyAlarm.alarmOn(parent.getContext());
+                    currMyAlarm.switchState = true;
                 }
-                else {
-                    currAlarm.alarmOff(parent.getContext());
+                else
+                {
+                    currMyAlarm.alarmOff(parent.getContext());
+                    currMyAlarm.switchState = false;
                 }
+                notifyDataSetChanged();
+                // Update internal storage
+                ((MainActivity)parent.getContext()).updateAlarmStorage();
             }
         });
 
-        Button editButton = (Button)itemView.findViewById(R.id.editAlarmBtn);
+        // Update View based on MyAlarm data
+        final TextView alarmDesc = (TextView)itemView.findViewById(R.id.alarmDesc);
+        alarmDesc.setText(currMyAlarm.toString());
+        alarmSwitch.setChecked(currMyAlarm.switchState);
 
+        // EDIT button
+        Button editButton = (Button)itemView.findViewById(R.id.editAlarmBtn);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Open new alarm window with intent to edit
                 Intent intent = new Intent(parent.getContext(), CreateNewAlarm.class);
-                intent.putExtra("index", position); // The index of the alarm
+                intent.putExtra("index", position);
                 ((Activity)parent.getContext()).startActivityForResult(intent,
                         MainActivity.EDIT_ALARM_REQUEST);
             }
         });
 
-        // POST Request template
-        /*editButton.setOnClickListener(new View.OnClickListener() {
+        // DELETE button
+        Button deleteButton = (Button)itemView.findViewById(R.id.deleteAlarmBtn);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,
-                                                RequestManager.requestURL, null,
-                    new Response.Listener<JSONObject>()
-                    {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Do something with the response
-                            try
-                            {
-                                alarmDesc.setText(
-                                        RequestManager.checkStatus(response.getInt("status")));
-                            }
-                            catch(org.json.JSONException e){
-                                // Whoops
-                                alarmDesc.setText(e.toString());
-                            }
-                        }
-                    },
-                    new Response.ErrorListener()
-                    {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Handle the error
-                        }
-                    }
-                ){
-                    @Override
-                    public byte[] getBody()
-                    {
-                        JSONObject jsonObject = new JSONObject();
-                        String body = null;
-                        try
-                        {
-                            jsonObject.put("coffeeSize", "Medium");
-                            body = jsonObject.toString();
-                        } catch (JSONException e)
-                        {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-
-                        try
-                        {
-                            return body.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException e)
-                        {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                };
-                RequestManager.getInstance(getContext()).addToRequestQueue(postRequest);
+                // Delete alarm from the array of alarms
+                ((MainActivity)parent.getContext()).removeAlarm(position);
             }
-        });*/
+        });
+
         return itemView;
     }
 }
