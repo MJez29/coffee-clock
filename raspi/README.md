@@ -1,0 +1,3 @@
+# CoffeeClock on the Raspberry Pi
+
+The Raspberry Pi runs a RESTful Node.js server which listens for request to brew coffee (routes can be seen in `API.md`. The server implements a queue so it doesn't crash when it receives multiple orders at the same time. When it is time to brew, it runs a python script which controls the GPIO which in turn interfaces with the Keurig. A successful brew occurs when the Python script exits with status 0.

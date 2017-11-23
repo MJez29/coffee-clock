@@ -1,20 +1,8 @@
 from sys import *
 import time
 import RPi.GPIO as GPIO
-'''
-SUCCESS = 0
-BREW_ERROR = 2
-COMMAND_LINE_ERROR = 3
 
-SMALL = "Small"
-MEDIUM = "Medium"
-LARGE = "Large"
-
-# Error if not enough or too many arguments passed
-if len(argv) != 2 or argv[1] not in [SMALL, MEDIUM, LARGE]:
-    print(argv)
-    exit(COMMAND_LINE_ERROR)
-'''
+# The script that brews the coffee
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -32,16 +20,22 @@ brewServo = GPIO.PWM(15, 50)
 
 print("Moving servos to correct positions")
 
+# Makes sure the servos are in the correct start position
+
 lidServo.start(7.5)
 brewServo.start(2.5)
 
 time.sleep(2)
+
+# Simulates closing the lid
 
 lidServo.ChangeDutyCycle(2.5)
 
 print("Lid closed sensor pressed")
 
 time.sleep(2)
+
+# Presses the medium coffee button
 
 brewServo.ChangeDutyCycle(7.5)
 
@@ -50,6 +44,8 @@ time.sleep(0.5)
 brewServo.ChangeDutyCycle(2.5)
 
 print("Brew button pressed")
+
+# Waits for the coffee to brew and gives enough time to add more water to the Keurig and to replace the K-Cup
 
 time.sleep(120)
 
@@ -62,29 +58,8 @@ print("Servos back to original position")
 
 time.sleep(1)
 
+# Cleans up the pins when finished
+
 brewServo.stop()
 lidServo.stop()
 GPIO.cleanup()
-
-'''
-
-try:
-    while True:
-        print("Ed:D")
-        p.ChangeDutyCycle(7.5)
-        time.sleep(1)
-        q.ChangeDutyCycle(12.5)
-        time.sleep(1)
-        p.ChangeDutyCycle(2.5)
-        time.sleep(1)
-        q.ChangeDutyCycle(2.5)
-        time.sleep(1)
-        p.ChangeDutyCycle(12.5)
-        time.sleep(1)
-        q.ChangeDutyCycle(7.5)
-        time.sleep(1)
-except:
-    p.stop()
-    q.stop()
-    GPIO.cleanup()
-'''

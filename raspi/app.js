@@ -4,11 +4,6 @@ const app = express();
 const Status = require("./status");
 const bodyParser = require("body-parser");
 
-// Code to get router IP address
-// require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-//     console.log('addr: '+add);
-// })
-
 const PORT = 3000;
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -47,7 +42,13 @@ app.route("/brew")
         }
     })
 
+/**
+ * Routes to handle a specific order
+ */
 app.route("/brew/:orderNum")
+    /**
+     * Returns general information about the specified order
+     */
     .get((req, res, next) => {
         console.log("GET /brew/" + req.params.orderNum);
         try {
@@ -76,6 +77,7 @@ app.route("/brew/:orderNum")
         });
     })
 
+// Starts the server
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
 })

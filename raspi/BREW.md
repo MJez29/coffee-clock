@@ -7,11 +7,11 @@ Brew.py is the script that interface's with the pins
 
 #### On Raspberry Pi
 ```
-python3 brew.py Small|Medium|Large
+python3 brew.py
 ```
 #### On Windows
 ```
-python3 brew.py Small|Medium|Large
+python brew.py
 ```
 ---
 ## Exit Codes

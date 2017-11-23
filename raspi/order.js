@@ -1,5 +1,8 @@
 const COFFEE_SIZE = require("./coffee-size");
 
+/**
+ * A container class for all the information for a specific order
+ */
 module.exports = class Order {
 
     static get IN_QUEUE() {
